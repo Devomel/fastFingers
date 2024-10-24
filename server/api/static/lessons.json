@@ -1,0 +1,39 @@
+{
+  "sections": {
+    "section_1": {
+      "title": "Home Row Basics",
+      "lesson_1": "asdf jkl;",
+      "lesson_2": "a s d f j k l ;",
+      "lesson_3": "as df jk ;l",
+      "lesson_4": "sdf jkl as;"
+    },
+    "section_2": {
+      "title": "Top Row Introduction",
+      "lesson_1": "qwerty uiop",
+      "lesson_2": "q w e r t y u i o p",
+      "lesson_3": "we rt yu io qp",
+      "lesson_4": "qwert asdf jkl;"
+    },
+    "section_3": {
+      "title": "Bottom Row Introduction",
+      "lesson_1": "zxcvbn m,./",
+      "lesson_2": "z x c v b n m , . /",
+      "lesson_3": "bnm zxc ./v ,",
+      "lesson_4": "asdf jkl; zxcvbn m,./"
+    },
+    "section_4": {
+      "title": "All Rows Practice",
+      "lesson_1": "the quick brown fox jumps over the lazy dog",
+      "lesson_2": "asdf qwerty zxcvbn m,./ jkl;",
+      "lesson_3": "qwerty asdf zxcv jkl; bn m,./",
+      "lesson_4": "the lazy dog jumps over the quick brown fox"
+    },
+    "section_5": {
+      "title": "Numbers and Special Characters",
+      "lesson_1": "1234567890 !@#$%^&*()",
+      "lesson_2": "1 2 3 4 5 6 7 8 9 0",
+      "lesson_3": "! @ # $ % ^ & * ( )",
+      "lesson_4": "the quick brown fox 123 jumps!"
+    }
+  }
+}

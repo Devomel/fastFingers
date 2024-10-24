@@ -1,0 +1,75 @@
+.keyboard {
+  backdrop-filter: blur(10px);
+  background: rgba(82, 56, 106, 0.298);
+  border-radius: 15px;
+
+  font-size: 1.5rem;
+
+  &__container {
+    padding: 50px;
+    width: 940px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin: 0 auto;
+  }
+
+  &__row {
+    width: 100%;
+    display: flex;
+    gap: 7px;
+  }
+
+  &__btn {
+    width: 51px;
+    height: 51px;
+    border-radius: 10px;
+    cursor: auto;
+  }
+}
+
+.highlight {
+  transform: translate(0, -3px);
+  height: 53px;
+  border: 2px solid #23de19;
+  border-bottom: 6px solid #23de19;
+}
+
+.functional_btn {
+  flex-grow: 1;
+  font-size: 1rem;
+}
+
+.purple {
+  background: #d59ef3de;
+  color: #2a0a3b;
+}
+
+.red {
+  background: #f8c9c9;
+  color: #8c2222;
+}
+
+.blue {
+  background: #a9d7fd;
+  color: #203b51;
+}
+
+.green {
+  background: #caf3d3;
+  color: #14421d;
+}
+
+.yellow {
+  background: #ede8b2;
+  color: #474212;
+}
+
+.grey {
+  background: #e3e3e38c;
+}
+
+.spaceBtn {
+  flex: 0 0 45%;
+  margin: 0 auto;
+}
