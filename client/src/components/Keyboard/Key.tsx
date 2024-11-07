@@ -5,24 +5,27 @@ interface KeyProps {
     key: string;
     color: string;
     type: string;
+    keyCode: string
   }
-  currBtn: string
+  currBtn?: string
+  missprint: string
 }
 
-const Key: FC<KeyProps> = ({ symbol, currBtn }) => {
+const Key: FC<KeyProps> = ({ symbol, currBtn, missprint }) => {
   return (
-    <button
+    <span
       key={symbol.key}
       data-key={symbol.key}
       className={[
         symbol.key.toLowerCase() === currBtn ? "highlight" : "",
         symbol.type,
         symbol.color,
+        symbol.keyCode === missprint ? "missprint" : "",
         "keyboard__btn"
       ].join(" ")}
     >
       {symbol.key}
-    </button>
+    </span>
   )
 }
 

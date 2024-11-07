@@ -1,11 +1,13 @@
 import { fetchBaseQuery } from "@reduxjs/toolkit/query";
+import { Mutex } from 'async-mutex'
+
+import { IAuthResponse, loggedOut, tokenReceived } from "../store/authSlice";
+
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query'
-import { IAuthResponse, loggedOut, tokenReceived } from "../store/authSlice";
-import { Mutex } from 'async-mutex'
 
 const mutex = new Mutex()
 const baseQuery = fetchBaseQuery({ baseUrl: "http://localhost:5000/api" })
@@ -29,7 +31,7 @@ export const baseQueryWithReauth: BaseQueryFn<
           // Повторюємо початковий запит
           result = await baseQuery(args, api, extraOptions)
         } else {
-          api.dispatch(loggedOut(""))
+          api.dispatch(loggedOut())
         }
       } finally {
         //Функція release() має бути викликана одноразово коли м'ютекс має бути звільний

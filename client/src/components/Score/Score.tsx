@@ -1,18 +1,22 @@
 import { FC } from 'react'
-import { useNavigate } from 'react-router-dom'
 import "./Score.scss"
-const Score: FC = () => {
-  const score = sessionStorage.getItem("score")
-  const location = useNavigate()
+import { countScore } from '../../utils/countScore'
+
+interface IScoreProps {
+  sentenceLenght: number,
+  timeSpent: number
+}
+
+const Score: FC<IScoreProps> = ({ sentenceLenght, timeSpent }) => {
+  const score = countScore(sentenceLenght, timeSpent)
+
   return (
     <>
       <div className='score'>
         <h1>
           Швидкість друку: {score} зн./хв
         </h1>
-        <button onClick={() => location(-1)}>Retry</button>
       </div>
-
     </>
   )
 }

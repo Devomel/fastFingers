@@ -1,7 +1,8 @@
 import { FC, useState } from "react"
-import MyInput from "../../UI/input/MyInput"
+
 import { authService } from "../../services/authService";
 import MyButton from "../../UI/button/MyButton";
+import MyInput from "../../UI/input/MyInput"
 
 
 export const SignIn: FC = () => {

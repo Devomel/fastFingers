@@ -1,12 +1,13 @@
 import { FC } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { privateRoutes, publicRoutes } from '../router/router';
+
 import { useAppSelector } from '../hooks/redux';
+import { privateRoutes, publicRoutes } from '../router/router';
 
 const AppRouter: FC = () => {
   const isAuthenticated = useAppSelector(state => state.auth.isAuthenticated)
   return (
-    <div>
+    <>
       <Routes>
         {
           isAuthenticated
@@ -17,9 +18,9 @@ const AppRouter: FC = () => {
               <Route key={route.path} path={route.path} element={<route.component />} />
             )
         }
-        <Route path={"*"} element={<Navigate to="/main" />} />
+        <Route path={"*"} element={<Navigate to="/lesson" />} />
       </Routes >
-    </div>
+    </>
   )
 }
 

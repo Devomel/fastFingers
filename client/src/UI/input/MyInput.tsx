@@ -1,5 +1,5 @@
-import React from 'react';
 import { FC, InputHTMLAttributes } from 'react';
+
 import classes from "./MyInput.module.scss"
 
 interface IMyInputProps extends InputHTMLAttributes<HTMLInputElement> {

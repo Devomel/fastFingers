@@ -1,4 +1,5 @@
 import { FC } from 'react'
+
 import AuthForm from '../components/Auth/AuthForm';
 
 const Auth: FC = () => {

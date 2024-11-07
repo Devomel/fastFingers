@@ -1,8 +1,9 @@
 import { FC } from "react";
+
 import Auth from "../components/Auth/AuthForm";
-import Main from "../pages/Main";
 import Score from "../components/Score/Score";
 import TypingSection from "../components/TypingSection/TypingSection";
+import Main from "../pages/Main";
 
 
 interface Route {

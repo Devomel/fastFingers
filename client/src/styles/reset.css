@@ -9,11 +9,7 @@
 }
 
 body {
-  background: url("../assets/bg/app_bg1.svg") no-repeat;
-  background-position: 0 0;
-  background-size: cover;
-  background-attachment: fixed;
-  /* background: #201934; */
+  background: #08011eed;
 }
 
 
