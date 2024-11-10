@@ -28,15 +28,10 @@ const createRoom = () => {
    return roomId
 }
 
-const getRoom = (roomId: any) => {
-   return rooms[roomId] || null
-}
-
 const broadCastToRoom = (roomId: any, message: any) => {
    var room = rooms[roomId]
    if (!room) return
    message = JSON.stringify(message)
-   console.log("🚀 ~ broadCastToRoom ~ message:", message)
    Object
       .keys(room.connections)
       .forEach(uuid => {
@@ -46,20 +41,13 @@ const broadCastToRoom = (roomId: any, message: any) => {
 }
 
 
-const handleMessage = (bytes: any, roomId: any, userId: any) => {
+const handleMessage = (bytes: any, roomId: any, username: any) => {
    const message = JSON.parse(bytes.toString())
-   console.log("message:", message)
    const room = rooms[roomId]
-   console.log("🚀 ~ handleMessage ~ room:", room)
-
    if (!room) return
 
-   const user = room.users[userId]
-   console.log("🚀 ~ handleMessage ~ user:", user)
-
+   const user = room.users[username]
    user.state = message
-
-   console.log("try happen")
    broadCastToRoom(roomId, room.users)
 }
 
@@ -70,7 +58,6 @@ type Room = {
 };
 
 wsServer.on("connection", (connection, request) => {
-
    const { username, roomId: roomIdParam } = url.parse(request.url || "", true).query as any;
 
    // Перевіряємо, чи користувач хоче підключитись до існуючої кімнати або створити нову
@@ -83,26 +70,21 @@ wsServer.on("connection", (connection, request) => {
    const userId = uuidv4();
 
    room.connections[userId] = connection;
-   room.users[userId] = { username, state: {} };
+   room.users[username] = { state: {} };
 
    // Відправляємо новому користувачу інформацію про його кімнату
    connection.send(JSON.stringify({ roomId }));
-
-   connection.on("message", (message) => handleMessage(message, roomId, userId));
-
+   connection.on("message", (message) => handleMessage(message, roomId, username));
    // Видаляємо користувача з кімнати після відключення
    connection.on("close", () => {
       delete room.connections[userId];
       delete room.users[userId];
-
       // Якщо в кімнаті більше немає користувачів, видаляємо кімнату
       if (room.users.length === 0) {
          delete rooms[roomId];
       }
    });
 });
-
-
 
 app.use(express.json());
 app.use(cookieParser());
