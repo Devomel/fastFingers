@@ -1,8 +1,9 @@
 .Container {
-  display: flex;
-  justify-content: space-between;
-  max-width: min(93vw, 1240px);
-  margin: 0 auto;
-  gap: max(10%, 10px);
-  align-items: center;
+   display: flex;
+   flex-direction: column;
+   justify-content: space-between;
+   max-width: min(93vw, 1240px);
+   margin: 0 auto;
+   gap: max(10%, 10px);
+   align-items: center;
 }

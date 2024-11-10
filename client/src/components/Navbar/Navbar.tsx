@@ -4,13 +4,14 @@ import "./Navbar.scss"
 
 
 const Navbar: FC = () => {
-  return (
-    <div className='navbar'>
-      <Link to={'/lesson'}>Тестування</Link>
-      <Link to={'/lesson'}>Статистика</Link>
-      <Link to={'/lesson'}>Практика</Link>
-    </div>
-  )
+   return (
+      <div className='navbar'>
+         <Link to={'/lesson'}>Тестування</Link>
+         <Link to={'/lesson'}>Статистика</Link>
+         <Link to={'/lesson'}>Практика</Link>
+         <Link to={'/playing'}>ГРА</Link>
+      </div>
+   )
 }
 
 export default Navbar;
