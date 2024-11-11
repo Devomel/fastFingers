@@ -1,31 +1,22 @@
 import { FC, useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { wsActions } from '../../pages/GamePage';
 // import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
 
 interface GameSectionProps {
    roomId: string | null;
    username: string;
-
+   action: wsActions
 }
 
-const GameSection: FC<GameSectionProps> = ({ roomId, username }) => {
+const GameSection: FC<GameSectionProps> = ({ roomId, username, action }) => {
 
-
-
-
-   const socketUrl = `ws://localhost:5000?roomId=${roomId}&username=${username}`
-
+   const socketUrl = `ws://localhost:5000?action=${action}&roomId=${roomId}&username=${username}`
 
    const [testMessage, settestMessage] = useState('')
    const [messageHistory] = useState<MessageEvent<string>[]>([]);
 
    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
-
-
-   console.log(testMessage)
-   // const handleClickSendMessage = useCallback(() => { 
-   //    console.log(testMessage)
-   //    sendMessage(testMessage)}, [] );
 
    const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
