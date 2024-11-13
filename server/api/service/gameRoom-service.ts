@@ -7,35 +7,32 @@ type Room = {
 };
 
 export interface IGameRoomService {
-   createRoom(clientId: string): { roomId: string, room: Room }
+   createRoom(roomId: string): Room;
    deleteRoom(roomId: string): void
+   addUserToRoom(room: Room, username: string, connection: WebSocket): void
+   getRoomById(roomId: string): Room | null
 }
 
 export class GameRoomService implements IGameRoomService {
    private rooms: Map<string, Room> = new Map()
 
-   createRoom(): { roomId: string, room: Room } {
-      const roomId = this.createRoomId()
+   createRoom(roomId: string): Room {
       const room = {
          id: roomId,
          users: {},
          connections: {}
       }
       this.rooms.set(roomId, room)
-      return { roomId, room }
+      return room
    }
    getRoomById(roomId: string) {
 
-      if (this.rooms.has(roomId)) {
-         return this.rooms.get(roomId)
-      }
+      return this.rooms.get(roomId) ?? null;
       //ADD HANDLER FOR NOT FOUND ROOM
-      return null
+
    }
-   addConnection(room: Room, username: string, connection: WebSocket) {
+   addUserToRoom(room: Room, username: string, connection: WebSocket) {
       room.connections[username] = connection
-   }
-   addClient(room: Room, username: string) {
       room.users[username] = { state: {} }
    }
    updateUserState(room: Room, username: string, newState: string) {
@@ -45,6 +42,7 @@ export class GameRoomService implements IGameRoomService {
       return Math.random().toString(36).substring(7)
    }
    broadCastToRoom(room: Room, message: any) {
+      console.log(room)
       Object
          .keys(room.connections)
          .forEach(username => {

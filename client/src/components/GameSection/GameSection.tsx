@@ -1,22 +1,21 @@
 import { FC, useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { wsActions } from '../../pages/GamePage';
-// import { WebSocketMessage } from 'react-use-websocket/dist/lib/types';
+import { createUniqueId } from '../../utils/webSocket/createUniqueId';
 
 interface GameSectionProps {
-   roomId: string | null;
-   username: string;
-   action: wsActions
+   queryParams: { username: string, roomId: string, action: wsActions };
+   // setStart: D
 }
+const socketUrl = 'ws://localhost:5000';
 
-const GameSection: FC<GameSectionProps> = ({ roomId, username, action }) => {
-
-   const socketUrl = `ws://localhost:5000?action=${action}&roomId=${roomId}&username=${username}`
+const GameSection: FC<GameSectionProps> = ({ queryParams }) => {
 
    const [testMessage, settestMessage] = useState('')
-   const [messageHistory] = useState<MessageEvent<string>[]>([]);
-
-   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+   queryParams.roomId = queryParams.roomId ? queryParams.roomId : createUniqueId()
+   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+      queryParams
+   });
 
    const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
@@ -25,6 +24,7 @@ const GameSection: FC<GameSectionProps> = ({ roomId, username, action }) => {
       [ReadyState.CLOSED]: 'Closed',
       [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
    }[readyState];
+
 
    return (
       <div>
@@ -40,11 +40,6 @@ const GameSection: FC<GameSectionProps> = ({ roomId, username, action }) => {
             </button>
             <span>The WebSocket is currently {connectionStatus}</span>
             {lastMessage ? <h1>Last message: {lastMessage.data}</h1> : null}
-            <ul>
-               {messageHistory.map((message, idx) => (
-                  <span key={idx}>{message ? message.data : null}</span>
-               ))}
-            </ul>
          </div>
       </div>
    )

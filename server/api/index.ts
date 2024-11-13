@@ -5,18 +5,18 @@ import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import router from './router/index';
 import errorMiddleware from './middlewares/error-middleware';
-import { WebSocketServer } from 'ws';
 import http from 'http';
-import url from 'url';
-import { v4 as uuidv4 } from 'uuid';
 import { WebSocketController } from './controller/webSocket-controller';
 import { GameRoomService } from './service/gameRoom-service';
+import { wsActionHandler } from './service/webSocket/wsActionHandler';
 
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Express = express();
 const server = http.createServer(app)
+const gameRoomService = new GameRoomService()
+const actionHandler = new wsActionHandler(gameRoomService);
+const wsServer = new WebSocketController(server, gameRoomService, actionHandler)
 
-const wsServer = new WebSocketController(server, new GameRoomService())
 
 app.use(express.json());
 app.use(cookieParser());
