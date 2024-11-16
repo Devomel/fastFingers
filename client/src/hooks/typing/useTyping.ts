@@ -1,22 +1,22 @@
 import { useEffect } from "react";
 
 interface IUseTypingArgs {
-  onKeyUp: () => void;
-  onKeyDown: (e: globalThis.KeyboardEvent) => void;
-  isTimerFinish?: boolean; // Додали як необов'язковий параметр
+   onKeyUp: () => void;
+   onKeyDown: (e: globalThis.KeyboardEvent) => void;
+   isTimerFinish?: boolean;
 }
 
 function useTyping({ onKeyUp, onKeyDown, isTimerFinish = false }: IUseTypingArgs) {
-  useEffect(() => {
-    if (!isTimerFinish) {
-      document.addEventListener("keyup", onKeyUp);
-      document.addEventListener("keydown", onKeyDown);
-    }
+   useEffect(() => {
+      if (!isTimerFinish) {
+         document.addEventListener("keyup", onKeyUp);
+         document.addEventListener("keydown", onKeyDown);
+      }
 
-    return () => {
-      document.removeEventListener("keyup", onKeyUp);
-      document.removeEventListener("keydown", onKeyDown);
-    };
-  }, [isTimerFinish, onKeyUp, onKeyDown]); // Додали isTimerFinish як залежність
+      return () => {
+         document.removeEventListener("keyup", onKeyUp);
+         document.removeEventListener("keydown", onKeyDown);
+      };
+   }, [isTimerFinish, onKeyUp, onKeyDown]);
 }
 export default useTyping;

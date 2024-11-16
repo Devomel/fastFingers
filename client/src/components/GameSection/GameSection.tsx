@@ -1,20 +1,28 @@
-import { FC, useState } from 'react'
+import { Dispatch, FC, useEffect, useState } from 'react'
 import useWebSocket, { ReadyState } from 'react-use-websocket';
-import { wsActions } from '../../pages/GamePage';
+import { useAppSelector } from '../../hooks/redux';
 import { createUniqueId } from '../../utils/webSocket/createUniqueId';
+import TypingSection from '../TypingSection/TypingSection';
+import { wsActions } from './GameForm';
 
 interface GameSectionProps {
    queryParams: { username: string, roomId: string, action: wsActions };
-   // setStart: D
+   setStart: Dispatch<boolean>
 }
 const socketUrl = 'ws://localhost:5000';
 
-const GameSection: FC<GameSectionProps> = ({ queryParams }) => {
-
+const GameSection: FC<GameSectionProps> = ({ queryParams, setStart }) => {
    const [testMessage, settestMessage] = useState('')
-   queryParams.roomId = queryParams.roomId ? queryParams.roomId : createUniqueId()
+   const { done } = useAppSelector(state => state.typing)
+   queryParams.roomId ||= createUniqueId()
+   useEffect(() => {
+      if (!done) return
+      sendMessage(`${done.length}`)
+   }, [done])
    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-      queryParams
+      queryParams,
+      onOpen: () => setStart(true),
+      onClose: () => setStart(false)
    });
 
    const connectionStatus = {
@@ -27,10 +35,10 @@ const GameSection: FC<GameSectionProps> = ({ queryParams }) => {
 
 
    return (
-      <div>
-         {/* <TypingSection /> */}
-         <div style={{ display: "flex", flexDirection: "column" }}>
+      <>
+         <TypingSection />
 
+         <div style={{ display: "flex", flexDirection: "column" }}>
             <input type="text" onChange={(e) => settestMessage(e.target.value)} placeholder='message' />
             <button
                onClick={() => sendMessage(JSON.stringify(testMessage))}
@@ -41,7 +49,7 @@ const GameSection: FC<GameSectionProps> = ({ queryParams }) => {
             <span>The WebSocket is currently {connectionStatus}</span>
             {lastMessage ? <h1>Last message: {lastMessage.data}</h1> : null}
          </div>
-      </div>
+      </>
    )
 
 }

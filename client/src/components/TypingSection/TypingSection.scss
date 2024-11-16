@@ -1,9 +1,9 @@
 .typingSection {
-  display: flex;
-  flex-direction: column;
-  height: 100svh;
-  gap: 7%;
-  align-items: center;
-  justify-content: center;
-  flex: 1 1 100%;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   height: 90vh;
+   justify-content: space-evenly;
+   max-width: 900px;
+   margin: 0 auto;
 }

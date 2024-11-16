@@ -1,6 +1,6 @@
 import lessons from '../assets/lessons.json'
 
-export const createInitialState = () => {
+export const createTypingInitialState = () => {
    const lessonIndex = +(Math.random() * 20).toFixed(0)
    const currLesson = lessons.facts[lessonIndex]
    currLesson.replace(" ", "//")
@@ -8,7 +8,7 @@ export const createInitialState = () => {
       done: "",
       currChar: currLesson.charAt(0),
       rest: currLesson.substring(1),
-      mistakes: new Set<string>(""),
+      mistakes: [""],
       isMissprint: false,
    }
 }
