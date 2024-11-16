@@ -42,7 +42,6 @@ export class GameRoomService implements IGameRoomService {
       return Math.random().toString(36).substring(7)
    }
    broadCastToRoom(room: Room, message: any) {
-      console.log(room)
       Object
          .keys(room.connections)
          .forEach(username => {

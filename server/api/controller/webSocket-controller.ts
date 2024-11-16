@@ -1,4 +1,4 @@
-import { wsActionHandler } from './../service/webSocket/wsActionHandler';
+import { wsActionHandler } from '../service/wsActionHandler';
 import http from "http";
 import url from "url";
 import WebSocket, { RawData, WebSocketServer } from "ws";
@@ -18,7 +18,6 @@ export class WebSocketController {
    private handleMessage(message: RawData, roomId: string, username: string) {
       const decodedMessage = JSON.parse(message.toString())
       const room = this.gameRoomService.getRoomById(roomId)
-      console.log(room)
       if (room) {
          const client = room.users[username]
          this.gameRoomService.updateUserState(room, username, decodedMessage)
@@ -27,9 +26,10 @@ export class WebSocketController {
    }
    private handleConnection(connection: WebSocket, request: http.IncomingMessage) {
       const queryParams = url.parse(request.url || "", true).query;
-
       const { username, action, roomId } = queryParams;
       if (typeof username !== 'string' || typeof action !== 'string' || typeof roomId !== 'string') {
+
+         //Add error exceptions
          console.log("Invalid username or type in request");
          return;
       }
@@ -45,15 +45,4 @@ export class WebSocketController {
       );
    }
 
-   private paramTypeCheck(param: any) {
-      return typeof param === 'string' ? param : param
-   }
-
-   private validateConnectionParams(params: any) {
-      return {
-         username: this.paramTypeCheck(params.username),
-         action: this.paramTypeCheck(params.action),
-         roomId: this.paramTypeCheck(params.roomId)
-      };
-   }
 }

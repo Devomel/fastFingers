@@ -8,7 +8,7 @@ import errorMiddleware from './middlewares/error-middleware';
 import http from 'http';
 import { WebSocketController } from './controller/webSocket-controller';
 import { GameRoomService } from './service/gameRoom-service';
-import { wsActionHandler } from './service/webSocket/wsActionHandler';
+import { wsActionHandler } from './service/wsActionHandler';
 
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Express = express();

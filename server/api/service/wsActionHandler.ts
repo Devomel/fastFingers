@@ -1,6 +1,6 @@
 import { WebSocket } from 'ws';
-import { IGameRoomService } from './../gameRoom-service';
-import { IConnectionParams } from '../../models/IConnectionParams';
+import { IGameRoomService } from './gameRoom-service';
+import { IConnectionParams } from '../models/IConnectionParams';
 
 
 
