@@ -5,9 +5,9 @@ export const createTypingInitialState = () => {
    const currLesson = lessons.facts[lessonIndex]
    currLesson.replace(" ", "//")
    return {
-      done: "",
-      currChar: currLesson.charAt(0),
-      rest: currLesson.substring(1),
+      done: [""],
+      currChar: currLesson[0],
+      rest: currLesson.split("").slice(1),
       mistakes: [""],
       isMissprint: false,
    }

@@ -2,16 +2,16 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { createTypingInitialState } from "./createTypingInitialState";
 
 export const initialState: typingState = {
-   done: "",
+   done: [""],
    currChar: "",
-   rest: "",
+   rest: [""],
    mistakes: [""],
 };
 
 export type typingState = {
-   done: string;
+   done: string[];
    currChar: string;
-   rest: string;
+   rest: string[];
    mistakes: string[];
 }
 const typingSlice = createSlice({
@@ -22,14 +22,14 @@ const typingSlice = createSlice({
          state.mistakes.push(action.payload)
       },
       creditKeypress(state) {
-         state.done = state.done + state.currChar
-         state.currChar = state.rest.charAt(0);
+         state.done = state.done.concat(state.currChar)
+         state.currChar = state.rest[0];
          state.rest = state.rest.slice(1)
       },
       setStartSentence(state, action: PayloadAction<string>) {
-         state.done = ""
-         state.currChar = action.payload.charAt(0)
-         state.rest = action.payload.substring(1)
+         state.done = [""]
+         state.currChar = action.payload[0]
+         state.rest = action.payload.split('').slice(1)
          state.mistakes = [""]
       }
    }

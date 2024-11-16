@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import "./InputText.scss"
 import { typingState } from "../../store/typingSlice";
+import Chars from "./Chars";
+
 
 interface InputSectionProps {
    missprint: string;
@@ -8,9 +10,13 @@ interface InputSectionProps {
 }
 const InputSection = ({ missprint, state }: InputSectionProps) => {
 
+
    const cursorRef = useRef<HTMLSpanElement>(null)
-   const inputRef = useRef<HTMLParagraphElement>(null)
+   const inputRef = useRef<HTMLDivElement>(null)
    const prevCursorPosition = useRef(0)
+   if (inputRef.current) {
+      // console.log(inputRef.current.children[opponentCursor])
+   }
    useEffect(() => {
       if (cursorRef.current && inputRef.current) {
          if (prevCursorPosition.current < cursorRef.current.offsetTop) {
@@ -26,17 +32,17 @@ const InputSection = ({ missprint, state }: InputSectionProps) => {
 
    return (
       <div style={{ position: "relative" }}>
-         <p className='input' ref={inputRef}>
-            <span className='input__done'>{state.done}</span>
+         <div className='input' ref={inputRef}>
+
+            <Chars chars={state.done} classname="input__done" />
 
             <span
                ref={cursorRef}
-               className={['input__curr', missprint ? "wrong" : ""].join(" ")}>
-               {state.currChar}
+               className={['input__curr', missprint ? "wrong" : ""].join(" ")}>{state.currChar}
             </span>
 
-            <span className='input__rest'>{state.rest}</span>
-         </p >
+            <Chars chars={state.rest} classname="input__rest" />
+         </div >
       </div>
    )
 }

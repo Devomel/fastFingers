@@ -17,7 +17,6 @@ const TypingSection: FC = () => {
 
    const { done, currChar, mistakes, rest } = useAppSelector(state => state.typing)
    const dispatch = useAppDispatch()
-   console.log(1)
    const [missprint, setMissprint] = useState<string>("")
    const mistakeRef = useRef(missprint)
    mistakeRef.current = missprint
@@ -31,7 +30,6 @@ const TypingSection: FC = () => {
    }
 
    const onKeyDown = (e: globalThis.KeyboardEvent) => {
-
       if (e.code in keyCodePreventExceptions) {
          e.preventDefault();
       }
@@ -53,10 +51,10 @@ const TypingSection: FC = () => {
       <div className="typingSection">
          {
             isTimerFinish
-               ? <Score sentenceLenght={done.length} timeSpent={4} />
+               ? <Score sentenceLenght={done.length} timeSpent={40} />
                : <InputSection missprint={missprint} state={{ done, currChar, mistakes, rest }} />
          }
-         <Timer duration={4} isStarted={!!done} setTimerState={setIsTimerFinish} />
+         <Timer duration={40} isStarted={done.length > 1} setTimerState={setIsTimerFinish} />
          <Keyboard currChar={currChar} missprint={missprint} mistakes={new Set([...mistakes])} isTimerFinish={isTimerFinish} />
       </div>
    )
