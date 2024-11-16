@@ -1,3 +1,3 @@
 export function createUniqueId() {
-   return (Math.random()).toString(36).substring(8)
+   return (Math.random()).toString(36).substring(2)
 }
