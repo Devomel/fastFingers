@@ -1,12 +1,49 @@
-import { useEffect } from "react";
+import { Dispatch, useCallback, useEffect, useRef } from "react";
+import { keyCodePreventExceptions, keyCodeReturnExceptions } from "../../models/eventCodeExceptions";
+import { creditKeypress, incrementMistakes } from "../../store/typingSlice";
+import { useAppDispatch, useAppSelector } from "../redux";
 
 interface IUseTypingArgs {
-   onKeyUp: () => void;
-   onKeyDown: (e: globalThis.KeyboardEvent) => void;
    isTimerFinish?: boolean;
+   missprint: string;
+   setMissprint: Dispatch<string>
 }
 
-function useTyping({ onKeyUp, onKeyDown, isTimerFinish = false }: IUseTypingArgs) {
+
+
+
+
+function useTyping({ missprint, setMissprint, isTimerFinish = false }: IUseTypingArgs) {
+   const dispatch = useAppDispatch()
+   const { currChar, rest, done } = useAppSelector(state => state.typing)
+   const mistakeRef = useRef(missprint)
+   mistakeRef.current = missprint
+
+   const onKeyUp = useCallback(() => {
+      if (mistakeRef.current) {
+         setMissprint("")
+      }
+   }, [])
+
+   const onKeyDown = ((e: globalThis.KeyboardEvent) => {
+      console.log("на старті колбека ", currChar)
+      if (e.code in keyCodePreventExceptions) {
+         e.preventDefault();
+      }
+      if (e.code in keyCodeReturnExceptions || !rest.length) {
+         return;
+      }
+      if (e.key === currChar) {
+         console.log("ЗАРАХУВАЛО ЛІТЕРУ")
+         dispatch(creditKeypress())
+      } else {
+         console.log(currChar)
+         console.log("WHY IS SHOWING")
+         setMissprint(e.code)
+         if (done.length) dispatch(incrementMistakes(e.code))
+      }
+   });
+
    useEffect(() => {
       if (!isTimerFinish) {
          document.addEventListener("keyup", onKeyUp);

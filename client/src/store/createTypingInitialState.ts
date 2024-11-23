@@ -10,5 +10,6 @@ export const createTypingInitialState = () => {
       rest: currLesson.split("").slice(1),
       mistakes: [""],
       isMissprint: false,
+      opponentProgress: ""
    }
 }

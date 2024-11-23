@@ -1,14 +1,16 @@
 import { FC } from 'react'
+import { useAppSelector } from '../../hooks/redux'
 import "./Score.scss"
 import { countScore } from '../../utils/countScore'
 
+
 interface IScoreProps {
-   sentenceLenght: number,
    timeSpent: number
 }
 
-const Score: FC<IScoreProps> = ({ sentenceLenght, timeSpent }) => {
-   const score = countScore(sentenceLenght, timeSpent)
+const Score: FC<IScoreProps> = ({ timeSpent }) => {
+   const { done } = useAppSelector(state => state.typing)
+   const score = countScore(done.length, timeSpent)
 
    return (
       <>

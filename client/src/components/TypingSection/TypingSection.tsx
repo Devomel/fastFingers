@@ -1,11 +1,7 @@
-import { FC, useRef, useState } from "react"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux"
+import { FC, useState } from "react"
+import { useAppDispatch } from "../../hooks/redux"
 import useTyping from "../../hooks/typing/useTyping"
-import {
-   keyCodePreventExceptions,
-   keyCodeReturnExceptions
-} from "../../models/eventCodeExceptions"
-import { creditKeypress, incrementMistakes } from "../../store/typingSlice"
+import { setStartSentence } from "../../store/typingSlice"
 import InputSection from "../InputSection/InputSection"
 import Keyboard from "../Keyboard/Keyboard";
 import Score from "../Score/Score"
@@ -14,48 +10,26 @@ import "./TypingSection.scss";
 
 
 const TypingSection: FC = () => {
-
-   const { done, currChar, mistakes, rest } = useAppSelector(state => state.typing)
+   const duration = 30000
    const dispatch = useAppDispatch()
-   const [missprint, setMissprint] = useState<string>("")
-   const mistakeRef = useRef(missprint)
-   mistakeRef.current = missprint
-
    const [isTimerFinish, setIsTimerFinish] = useState(false)
-
-   const onKeyUp = () => {
-      if (mistakeRef.current) {
-         setMissprint("")
-      }
-   }
-
-   const onKeyDown = (e: globalThis.KeyboardEvent) => {
-      if (e.code in keyCodePreventExceptions) {
-         e.preventDefault();
-      }
-      if (e.code in keyCodeReturnExceptions || isTimerFinish) {
-         return;
-      }
-      if (e.key === currChar) {
-         dispatch(creditKeypress())
-
-      } else {
-         setMissprint(e.code)
-         if (done) dispatch(incrementMistakes(e.code))
-      }
-   };
-
-   useTyping({ onKeyUp, onKeyDown, isTimerFinish })
+   const [missprint, setMissprint] = useState<string>("")
+   useTyping({ isTimerFinish, missprint, setMissprint })
 
    return (
       <div className="typingSection">
          {
             isTimerFinish
-               ? <Score sentenceLenght={done.length} timeSpent={40} />
-               : <InputSection missprint={missprint} state={{ done, currChar, mistakes, rest }} />
+               ? <Score timeSpent={duration} />
+               : <InputSection missprint={missprint} />
          }
-         <Timer duration={40} isStarted={done.length > 1} setTimerState={setIsTimerFinish} />
-         <Keyboard currChar={currChar} missprint={missprint} mistakes={new Set([...mistakes])} isTimerFinish={isTimerFinish} />
+         <Timer duration={duration} setTimerState={setIsTimerFinish} />
+         <Keyboard missprint={missprint} isTimerFinish={isTimerFinish} />
+         <button onClick={() => {
+            setIsTimerFinish(false)
+            dispatch(setStartSentence())
+            setMissprint("")
+         }}>РЕСТАРТ</button>
       </div>
    )
 

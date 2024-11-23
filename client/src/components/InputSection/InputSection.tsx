@@ -1,23 +1,26 @@
-import { useEffect, useRef } from "react";
+import { memo, useEffect, useRef } from "react";
 import "./InputText.scss"
-import { typingState } from "../../store/typingSlice";
-import Chars from "./Chars";
+import { useAppSelector } from "../../hooks/redux";
+
+
 
 
 interface InputSectionProps {
    missprint: string;
-   state: typingState;
 }
-const InputSection = ({ missprint, state }: InputSectionProps) => {
-
-
+const Char = memo(({ char, options }: { char: string, options?: object }) => {
+   return <span {...options}>{char}</span>
+})
+Char.displayName = "Char"
+const InputSection = ({ missprint }: InputSectionProps) => {
+   const { done, currChar, rest } = useAppSelector(state => state.typing)
+   const sentence = done.concat(currChar, rest).slice(1)
    const cursorRef = useRef<HTMLSpanElement>(null)
    const inputRef = useRef<HTMLDivElement>(null)
    const prevCursorPosition = useRef(0)
-   if (inputRef.current) {
-      // console.log(inputRef.current.children[opponentCursor])
-   }
    useEffect(() => {
+      console.log(cursorRef.current)
+
       if (cursorRef.current && inputRef.current) {
          if (prevCursorPosition.current < cursorRef.current.offsetTop) {
             inputRef.current.scroll({
@@ -28,20 +31,37 @@ const InputSection = ({ missprint, state }: InputSectionProps) => {
          }
          prevCursorPosition.current = cursorRef.current.offsetTop
       }
-   }, [state.rest])
+   }, [rest])
+
+   const getOptions = (index: number, doneLength: number) => {
+      if (index < doneLength) {
+         return { className: "input__done" };
+      } else if (index > doneLength) {
+         return {
+            className: "input__rest"
+         };
+      } else {
+         return {
+            className: ['input__curr', missprint ? "wrong" : ""].join(" "),
+            ref: cursorRef
+         };
+      }
+   };
+   console.log(done, currChar, rest)
 
    return (
       <div style={{ position: "relative" }}>
-         <div className='input' ref={inputRef}>
+         <div className='input' ref={inputRef} style={{ display: "flex", flexWrap: "wrap" }}>
 
-            <Chars chars={state.done} classname="input__done" />
-
-            <span
-               ref={cursorRef}
-               className={['input__curr', missprint ? "wrong" : ""].join(" ")}>{state.currChar}
-            </span>
-
-            <Chars chars={state.rest} classname="input__rest" />
+            {
+               sentence.map((char, index) => {
+                  return <Char
+                     char={char}
+                     key={index}
+                     options={getOptions(index, done.length - 1)}
+                  />
+               })
+            }
          </div >
       </div>
    )

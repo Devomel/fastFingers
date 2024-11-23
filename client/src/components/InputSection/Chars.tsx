@@ -12,7 +12,8 @@ const Chars = memo(({ chars, classname }: CharsProps) => {
             chars.map(
                char => <span
                   key={Math.random()}
-                  className={classname}>
+                  className={classname}
+               >
                   {char}
                </span>)
          }

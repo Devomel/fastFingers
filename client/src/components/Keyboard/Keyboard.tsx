@@ -1,20 +1,20 @@
 import { FC } from 'react'
 import keyBoards from "../../assets/keyBoards.json"
+import { useAppSelector } from '../../hooks/redux';
 import Key from './Key';
 
 
 import "./Keyboard.scss"
 import MistakeKey from './MistakeKey';
+
 interface KeyboardProps {
-   currChar: string
    missprint: string
-   mistakes: Set<string>
    isTimerFinish: boolean
 }
 
-const Keyboard: FC<KeyboardProps> = ({ currChar, missprint, mistakes, isTimerFinish }) => {
+const Keyboard: FC<KeyboardProps> = ({ missprint, isTimerFinish }) => {
    const symbols = keyBoards.ua
-   console.log("🚀 ~ isTimerFinish:", isTimerFinish)
+   const { currChar, mistakes } = useAppSelector(state => state.typing)
    return (
       isTimerFinish
          ? <div className="keyboard">
@@ -22,7 +22,7 @@ const Keyboard: FC<KeyboardProps> = ({ currChar, missprint, mistakes, isTimerFin
                {symbols.map((row, rowIndex) => (
                   <div className="keyboard__row" key={rowIndex}>
                      {row.map((symbol) => (
-                        <MistakeKey symbol={symbol} key={symbol.key} mistakes={mistakes} />
+                        <MistakeKey symbol={symbol} key={symbol.key} mistakes={new Set([...mistakes])} />
                      ))}
                   </div>
                ))
