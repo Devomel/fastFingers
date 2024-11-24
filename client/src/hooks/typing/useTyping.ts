@@ -26,7 +26,6 @@ function useTyping({ missprint, setMissprint, isTimerFinish = false }: IUseTypin
    }, [])
 
    const onKeyDown = ((e: globalThis.KeyboardEvent) => {
-      console.log("на старті колбека ", currChar)
       if (e.code in keyCodePreventExceptions) {
          e.preventDefault();
       }
@@ -34,11 +33,8 @@ function useTyping({ missprint, setMissprint, isTimerFinish = false }: IUseTypin
          return;
       }
       if (e.key === currChar) {
-         console.log("ЗАРАХУВАЛО ЛІТЕРУ")
          dispatch(creditKeypress())
       } else {
-         console.log(currChar)
-         console.log("WHY IS SHOWING")
          setMissprint(e.code)
          if (done.length) dispatch(incrementMistakes(e.code))
       }

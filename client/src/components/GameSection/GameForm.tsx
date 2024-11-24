@@ -31,7 +31,7 @@ const GameForm: FC<GameFormProps> = ({ queryParams, setQueryParams, setStart }) 
             </button>
          </div>
 
-         <div>
+         <form>
             <input
                type="text"
                placeholder='username'
@@ -43,8 +43,8 @@ const GameForm: FC<GameFormProps> = ({ queryParams, setQueryParams, setStart }) 
                   placeholder='roomId'
                   onChange={(e) => setQueryParams({ ...queryParams, roomId: e.target.value })} />
             }
-            <button onClick={() => setStart(true)}>Почати</button>
-         </div>
+            <button onClick={() => setStart(true)} type='submit'>Почати</button>
+         </form>
 
       </>
    )

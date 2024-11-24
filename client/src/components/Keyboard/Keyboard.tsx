@@ -34,7 +34,11 @@ const Keyboard: FC<KeyboardProps> = ({ missprint, isTimerFinish }) => {
                {symbols.map((row, rowIndex) => (
                   <div className="keyboard__row" key={rowIndex}>
                      {row.map((symbol) => (
-                        <Key symbol={symbol} currBtn={currChar} key={symbol.key} missprint={missprint} />
+                        <Key
+                           symbol={symbol}
+                           isCurrChar={currChar.toLocaleLowerCase() == symbol.key}
+                           key={symbol.key}
+                           missprint={missprint} />
                      ))}
                   </div>
                ))

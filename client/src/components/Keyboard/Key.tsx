@@ -1,32 +1,32 @@
-import { FC } from 'react'
+import { memo } from 'react'
 
 interface KeyProps {
-  symbol: {
-    key: string;
-    color: string;
-    type: string;
-    keyCode: string
-  }
-  currBtn?: string
-  missprint: string
+   symbol: {
+      key: string;
+      color: string;
+      type: string;
+      keyCode: string
+   }
+   isCurrChar: boolean
+   missprint: string
 }
 
-const Key: FC<KeyProps> = ({ symbol, currBtn, missprint }) => {
-  return (
-    <span
-      key={symbol.key}
-      data-key={symbol.key}
-      className={[
-        symbol.key.toLowerCase() === currBtn ? "highlight" : "",
-        symbol.type,
-        symbol.color,
-        symbol.keyCode === missprint ? "missprint" : "",
-        "keyboard__btn"
-      ].join(" ")}
-    >
-      {symbol.key}
-    </span>
-  )
-}
-
+const Key = memo(({ symbol, isCurrChar, missprint }: KeyProps) => {
+   return (
+      <span
+         key={symbol.key}
+         data-key={symbol.key}
+         className={[
+            isCurrChar ? "highlight" : "",
+            symbol.type,
+            symbol.color,
+            symbol.keyCode === missprint ? "missprint" : "",
+            "keyboard__btn"
+         ].join(" ")}
+      >
+         {symbol.key}
+      </span>
+   )
+})
+Key.displayName = "Key"
 export default Key;

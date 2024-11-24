@@ -29,20 +29,7 @@
       color: rgba(255, 255, 255, 0.841);
    }
 
-   &__opponentCursor {
-      position: relative;
 
-      &::before {
-         content: "";
-         position: absolute;
-         height: 90%;
-         width: 1px;
-         top: 0;
-         left: 0;
-         background: linear-gradient(180deg, #c81f1f 50%, #000000f0 100%);
-         animation: cursorBlink 1s infinite;
-      }
-   }
 
    &__curr {
       color: rgba(255, 255, 255, 0.841);
@@ -64,6 +51,21 @@
          background: linear-gradient(180deg, #1F6FC8 0%, #FFD700F0 100%);
          animation: cursorBlink 1s infinite;
       }
+   }
+}
+
+.opponentCursor {
+   position: relative;
+
+   &::before {
+      content: "";
+      position: absolute;
+      height: 90%;
+      width: 1px;
+      top: 0;
+      left: 0;
+      background: linear-gradient(180deg, #c81f1f 50%, #000000f0 100%);
+      animation: cursorBlink 1s infinite;
    }
 }
 

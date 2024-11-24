@@ -7,7 +7,7 @@ export const initialState: typingState = {
    currChar: "",
    rest: [""],
    mistakes: [""],
-   opponentProgress: ""
+   opponentProgress: 0
 };
 
 export type typingState = {
@@ -15,7 +15,7 @@ export type typingState = {
    currChar: string;
    rest: string[];
    mistakes: string[];
-   opponentProgress: string;
+   opponentProgress: number;
 }
 const typingSlice = createSlice({
    name: "typing",
@@ -32,7 +32,7 @@ const typingSlice = createSlice({
       setStartSentence() {
          return { ...createTypingInitialState() }
       },
-      setOpponentProgress(state, action: PayloadAction<string>) {
+      setOpponentProgress(state, action: PayloadAction<number>) {
          state.opponentProgress = action.payload
       }
    }
