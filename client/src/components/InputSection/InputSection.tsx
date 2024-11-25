@@ -48,7 +48,7 @@ const InputSection = ({ missprint }: InputSectionProps) => {
                ref: cursorRef,
             };
       }
-      if (index === +opponentProgress) result.className += " opponentCursor"
+      if (index === +opponentProgress && index > 0) result.className += " opponentCursor"
       return result
    };
 

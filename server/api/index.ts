@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import express, { Express } from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
@@ -9,7 +9,7 @@ import http from 'http';
 import { WebSocketController } from './controller/webSocket-controller';
 import { GameRoomService } from './service/gameRoom-service';
 import { wsActionHandler } from './service/wsActionHandler';
-
+dotenv.config()
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Express = express();
 const server = http.createServer(app)

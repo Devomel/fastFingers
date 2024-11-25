@@ -14,10 +14,11 @@ const socketUrl = 'ws://localhost:5000';
 
 const GameSection: FC<GameSectionProps> = ({ queryParams, setStart }) => {
    const { done } = useAppSelector(state => state.typing)
+   const { user } = useAppSelector(state => state.auth)
+   console.log("🚀 ~ user:", user)
    queryParams.roomId ||= createUniqueId()
    const dispatch = useAppDispatch()
    useEffect(() => {
-      // if (!done) return
       sendMessage(`${done.length - 1}`)
    }, [done])
 
@@ -26,17 +27,13 @@ const GameSection: FC<GameSectionProps> = ({ queryParams, setStart }) => {
       onOpen: () => setStart(true),
       onClose: () => setStart(false),
       onMessage: (event) => {
-         console.log(event)
-         console.log(JSON.stringify(JSON.parse(event.data).users["opponent"].state));
-         dispatch(setOpponentProgress(JSON.stringify(JSON.parse(event.data).users["opponent"].state)))
+         const data = JSON.parse(event.data);
+
+         const opponentState = data.users["opponent"].state;
+         dispatch(setOpponentProgress(Number(opponentState)));
       }
    });
-   // useEffect(() => {
-   //    if (!lastMessage?.data || !lastMessage?.data.users?.opponent) return
-   //    console.log("work", !lastMessage?.data)
-   //    console.log(JSON.stringify(JSON.parse(lastMessage?.data).users["opponent"].state))
 
-   // }, [lastMessage?.data.users])
    const connectionStatus = {
       [ReadyState.CONNECTING]: 'Connecting',
       [ReadyState.OPEN]: 'Open',

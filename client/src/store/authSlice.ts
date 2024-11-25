@@ -7,7 +7,8 @@ export interface IUser {
    email: string;
    isActivated: boolean;
    id: string,
-   role: string
+   role: string,
+   username: string
 }
 
 export interface IAuthResponse {
@@ -44,6 +45,7 @@ const authSlice = createSlice({
             state.user = action.payload.user
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken
+            localStorage.setItem("username", action.payload.user.username)
          }
       );
       builder.addMatcher(
@@ -52,6 +54,7 @@ const authSlice = createSlice({
             state.user = action.payload.user
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken
+            localStorage.setItem("username", action.payload.user.username)
          }
       );
       builder.addMatcher(
@@ -60,6 +63,7 @@ const authSlice = createSlice({
             state.user = null
             state.isAuthenticated = false;
             state.accessToken = null
+            localStorage.removeItem("username")
          }
       )
    }
