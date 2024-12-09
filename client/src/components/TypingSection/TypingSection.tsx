@@ -1,7 +1,8 @@
-import { FC, useState } from "react"
+import { FC, useCallback, useState } from "react"
 import { useAppDispatch } from "../../hooks/redux"
 import useTyping from "../../hooks/typing/useTyping"
-import { setStartSentence } from "../../store/typingSlice"
+
+import { setStartSentenceForDefaultMode } from "../../store/typingSlice"
 import InputSection from "../InputSection/InputSection"
 import Keyboard from "../Keyboard/Keyboard";
 import Score from "../Score/Score"
@@ -9,30 +10,33 @@ import Timer from "../Timer/Timer";
 import "./TypingSection.scss";
 
 
+
+const durationSeconds = 60
 const TypingSection: FC = () => {
-   const duration = 30000
    const dispatch = useAppDispatch()
    const [isTimerFinish, setIsTimerFinish] = useState(false)
    const [missprint, setMissprint] = useState<string>("")
+
+   const handleRestart = useCallback(() => {
+      setIsTimerFinish(false);
+      dispatch(setStartSentenceForDefaultMode());
+      setMissprint("");
+   }, [dispatch]);
+
    useTyping({ isTimerFinish, missprint, setMissprint })
 
    return (
       <div className="typingSection">
          {
             isTimerFinish
-               ? <Score timeSpent={duration} />
+               ? <Score timeSpent={durationSeconds} />
                : <InputSection missprint={missprint} />
          }
-         <Timer duration={duration} setTimerState={setIsTimerFinish} />
+         <Timer duration={durationSeconds} onFinish={setIsTimerFinish} />
          <Keyboard missprint={missprint} isTimerFinish={isTimerFinish} />
-         <button onClick={() => {
-            setIsTimerFinish(false)
-            dispatch(setStartSentence())
-            setMissprint("")
-         }}>РЕСТАРТ</button>
+         <button onClick={handleRestart}>РЕСТАРТ</button>
       </div>
    )
-
 }
 
 export default TypingSection;

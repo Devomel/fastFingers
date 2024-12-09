@@ -18,7 +18,7 @@ const AppRouter: FC = () => {
                      <Route key={route.path} path={route.path} element={<route.component />} />
                   )
             }
-            <Route path={"*"} element={<Navigate to="/main" />} />
+            <Route path={"*"} element={<Navigate to="/lesson" />} />
          </Routes >
       </>
    )

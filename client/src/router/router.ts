@@ -19,6 +19,7 @@ export const publicRoutes: Route[] = [
 ]
 
 export const privateRoutes: Route[] = [
+   { path: "/auth", component: Auth },
    { path: "/main", component: Main },
    { path: "/lesson", component: TypingSection },
    { path: "/playing", component: GamePage },
