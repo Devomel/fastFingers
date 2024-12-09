@@ -1,16 +1,24 @@
 import { WebSocket } from "ws";
 
-type Room = {
+export type Room = {
    id: string;
-   users: { [key: string]: {} };
-   connections: { [key: string]: WebSocket };
+   users: Record<string, object>;
+   connections: Record<string, WebSocket>;
+   textIndex: number
 };
+
+// додати конкретики типу 
+export type MessageType = {
+   type: string;
+   payload: string
+}
 
 export interface IGameRoomService {
    createRoom(roomId: string): Room;
    deleteRoom(roomId: string): void
    addUserToRoom(room: Room, username: string, connection: WebSocket): void
    getRoomById(roomId: string): Room | null
+   updateRoomTextIndex(): number
 }
 
 export class GameRoomService implements IGameRoomService {
@@ -20,13 +28,16 @@ export class GameRoomService implements IGameRoomService {
       const room = {
          id: roomId,
          users: {},
-         connections: {}
+         connections: {},
+         textIndex: +(Math.random() * 20).toFixed(0)
       }
       this.rooms.set(roomId, room)
       return room
    }
+   updateRoomTextIndex() {
+      return +(Math.random() * 20).toFixed(0)
+   }
    getRoomById(roomId: string) {
-
       return this.rooms.get(roomId) ?? null;
       //ADD HANDLER FOR NOT FOUND ROOM
 
@@ -46,7 +57,7 @@ export class GameRoomService implements IGameRoomService {
          .keys(room.connections)
          .forEach(username => {
             const connection = room.connections[username]
-            connection.send(JSON.stringify(message))
+            connection.send(JSON.stringify({ type: "UPDATE", payload: message }))
          })
    }
    deleteRoom(roomId: string): void {

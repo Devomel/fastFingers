@@ -1,8 +1,11 @@
+import { Room } from './../service/gameRoom-service';
 import { wsActionHandler } from '../service/wsActionHandler';
 import http from "http";
 import url from "url";
 import WebSocket, { RawData, WebSocketServer } from "ws";
-import { GameRoomService } from "../service/gameRoom-service";
+import { GameRoomService, MessageType } from "../service/gameRoom-service";
+import { RoomDto } from '../dtos/room-dto';
+
 
 export class WebSocketController {
    private gameRoomService: GameRoomService
@@ -16,14 +19,16 @@ export class WebSocketController {
    }
 
    private handleMessage(message: RawData, roomId: string, username: string) {
-      const decodedMessage = JSON.parse(message.toString())
+      const decodedMessage: MessageType = JSON.parse(message.toString())
+      console.log(decodedMessage)
       const room = this.gameRoomService.getRoomById(roomId)
       if (room) {
          const client = room.users[username]
-         this.gameRoomService.updateUserState(room, username, decodedMessage)
+         this.gameRoomService.updateUserState(room, username, decodedMessage.payload)
          this.gameRoomService.broadCastToRoom(room, { roomId: room.id, users: room.users })
       }
    }
+
    private handleConnection(connection: WebSocket, request: http.IncomingMessage) {
       const queryParams = url.parse(request.url || "", true).query;
       const { username, action, roomId } = queryParams;
@@ -33,16 +38,20 @@ export class WebSocketController {
          console.log("Invalid username or type in request");
          return;
       }
-
       this.actionHandler.handleAction(action, {
          username,
          roomId,
          connection
       });
 
-      connection.on("message", (message) =>
+      const firstMessage = this.gameRoomService.getRoomById(roomId)
+      if (firstMessage)
+         connection.send(JSON.stringify({ type: "ROOM_DATA", payload: new RoomDto(firstMessage) }));
+
+      connection.on("message", (message) => {
+         // console.log(message)
          this.handleMessage(message, roomId, username)
+      }
       );
    }
-
 }

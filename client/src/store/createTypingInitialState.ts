@@ -1,7 +1,10 @@
 import lessons from '../assets/lessons.json'
 
-export const createTypingInitialState = () => {
-   const lessonIndex = +(Math.random() * 20).toFixed(0)
+export const createTypingInitialState = ({ lessonIndex }: { lessonIndex?: number }) => {
+   if (!lessonIndex) {
+      lessonIndex = +(Math.random() * 20).toFixed(0)
+   }
+
    const currLesson = lessons.facts[lessonIndex]
    currLesson.replace(" ", "//")
    return {
