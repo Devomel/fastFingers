@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
 import "./InputText.scss"
-import { useAppSelector } from "../../hooks/redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import useMode from "../../hooks/useMode";
+import { setStartSentenceForDefaultMode, setStartSentenceForDualMode } from "../../store/typingSlice";
 import Char from "./Char";
 
 
@@ -10,11 +12,26 @@ interface InputSectionProps {
 
 
 const InputSection = ({ missprint }: InputSectionProps) => {
-   const { done, currChar, rest, opponentProgress } = useAppSelector(state => state.typing)
+   const { done, currChar, rest, opponentProgress, textIndex } = useAppSelector(state => state.typing)
    const sentence = done.concat(currChar, rest).slice(1)
    const cursorRef = useRef<HTMLSpanElement>(null)
    const inputRef = useRef<HTMLDivElement>(null)
    const prevCursorPosition = useRef(0)
+   const dispatch = useAppDispatch()
+
+   const mode = useMode()
+   useEffect(() => {
+      const startTextReceiver = {
+         default: () => dispatch(setStartSentenceForDefaultMode()),
+         dual: () => {
+            const roomData = textIndex
+            console.log(roomData)
+            // if (!roomData) return
+            dispatch(setStartSentenceForDualMode(roomData))
+         }
+      }
+      startTextReceiver[mode]()
+   }, [])
 
    useEffect(() => {
       if (cursorRef.current && inputRef.current) {
@@ -29,7 +46,7 @@ const InputSection = ({ missprint }: InputSectionProps) => {
       }
    }, [rest])
 
-   const getOptions = (
+   const getCharOptions = (
       index: number,
       doneLength: number,
       missprint: string,
@@ -52,7 +69,6 @@ const InputSection = ({ missprint }: InputSectionProps) => {
       return result
    };
 
-
    return (
       <div style={{ position: "relative" }}>
          <div className='input' ref={inputRef}>
@@ -61,7 +77,7 @@ const InputSection = ({ missprint }: InputSectionProps) => {
                   return <Char
                      char={char}
                      key={index}
-                     options={getOptions(index, done.length - 1, missprint, cursorRef)}
+                     options={getCharOptions(index, done.length - 1, missprint, cursorRef)}
                   />
                })
             }

@@ -15,18 +15,16 @@ const GameForm: FC<GameFormProps> = ({ queryParams, setQueryParams, setStart }) 
    return (
       <>
          <div style={{ display: "flex", gap: 20, maxWidth: "50vw", color: "#fff" }}>
-            <button
-               onClick={() => {
-                  setIsNewGame(true);
-                  setQueryParams({ ...queryParams, action: wsActions.NEW_ROOM })
-               }}>
+            <button onClick={() => {
+               setIsNewGame(true);
+               setQueryParams({ ...queryParams, action: wsActions.NEW_ROOM })
+            }}>
                Нова гра
             </button>
-            <button
-               onClick={() => {
-                  setIsNewGame(false);
-                  setQueryParams({ ...queryParams, action: wsActions.JOIN_ROOM })
-               }}>
+            <button onClick={() => {
+               setIsNewGame(false);
+               setQueryParams({ ...queryParams, action: wsActions.JOIN_ROOM })
+            }}>
                Приєднатись до гри
             </button>
          </div>
@@ -34,7 +32,7 @@ const GameForm: FC<GameFormProps> = ({ queryParams, setQueryParams, setStart }) 
          <form>
             <input
                type="text"
-               placeholder='username'
+               placeholder='nick'
                onChange={(e) => setQueryParams({ ...queryParams, username: e.target.value })} />
             {
                !isNewGame

@@ -1,7 +1,7 @@
 import { Dispatch, FC, useEffect } from 'react'
-import useWebSocket, { ReadyState } from 'react-use-websocket';
+import useWebSocket from 'react-use-websocket';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { setOpponentProgress } from '../../store/typingSlice';
+import { setOpponentProgress, setTextIndex } from '../../store/typingSlice';
 import { createUniqueId } from '../../utils/webSocket/createUniqueId';
 import TypingSection from '../TypingSection/TypingSection';
 import { wsActions } from './GameForm';
@@ -14,40 +14,45 @@ const socketUrl = 'ws://localhost:5000';
 
 const GameSection: FC<GameSectionProps> = ({ queryParams, setStart }) => {
    const { done } = useAppSelector(state => state.typing)
-   const { user } = useAppSelector(state => state.auth)
-   console.log("🚀 ~ user:", user)
    queryParams.roomId ||= createUniqueId()
    const dispatch = useAppDispatch()
+
    useEffect(() => {
-      sendMessage(`${done.length - 1}`)
+      sendMessage(JSON.stringify({ type: "UPDATE", payload: done.length - 1 }))
    }, [done])
 
-   const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+
+   const { sendMessage, lastMessage } = useWebSocket(socketUrl, {
       queryParams,
-      onOpen: () => setStart(true),
+      onOpen: () => {
+         setStart(true)
+
+      },
       onClose: () => setStart(false),
       onMessage: (event) => {
          const data = JSON.parse(event.data);
+         switch (data.type) {
+            case "UPDATE": {
+               const opponent = Object.keys(data.payload.users).find(user => user !== queryParams.username);
+               if (opponent) dispatch(setOpponentProgress(Number(data.payload.users[opponent].state)));
+               break;
+            }
+            case "ROOM_DATA":
+               dispatch(setTextIndex(data.payload.textIndex))
+               break;
+            default:
+               console.warn("Unknown message type")
+               break;
+         }
 
-         const opponentState = data.users["opponent"].state;
-         dispatch(setOpponentProgress(Number(opponentState)));
       }
    });
-
-   const connectionStatus = {
-      [ReadyState.CONNECTING]: 'Connecting',
-      [ReadyState.OPEN]: 'Open',
-      [ReadyState.CLOSING]: 'Closing',
-      [ReadyState.CLOSED]: 'Closed',
-      [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-   }[readyState];
 
 
    return (
       <>
          <TypingSection />
          <div style={{ display: "flex", flexDirection: "column", color: "white" }}>
-            <span>The WebSocket is currently {connectionStatus}</span>
             {lastMessage ? <h1>Last message: {lastMessage.data}</h1> : null}
          </div>
       </>
