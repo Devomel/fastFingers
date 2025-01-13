@@ -1,12 +1,13 @@
 import { memo } from 'react'
 
+export type Symbol = {
+   key: string;
+   color: string;
+   type: string;
+   keyCode: string
+}
 interface KeyProps {
-   symbol: {
-      key: string;
-      color: string;
-      type: string;
-      keyCode: string
-   }
+   symbol: Symbol
    isCurrChar: boolean
    misprintKey: string
 }

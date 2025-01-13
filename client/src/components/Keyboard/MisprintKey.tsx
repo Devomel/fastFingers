@@ -17,11 +17,9 @@ const MisprintKey: FC<MisprintKeyProps> = ({ symbol, mistakes }) => {
          data-key={symbol.key}
          className={[
             symbol.type,
-            // symbol.color,
             mistakes.has(symbol.keyCode) ? "missprint" : "",
             "keyboard__btn",
             "keyboard__mistakeKey"
-
          ].join(" ")}
       >
          {symbol.key}

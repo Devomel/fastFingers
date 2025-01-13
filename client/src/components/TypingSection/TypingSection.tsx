@@ -1,15 +1,17 @@
 import { useReducer } from "react"
-import useTimer from "../../hooks/useTimer"
 import useTyping from "../../hooks/useTyping"
 
 import { createTypingInitialState } from "../../store/typing/createTypingInitialState"
 import { initialState, typingReducer } from "../../store/typing/reducer"
+
 import InputSection from "../InputSection/InputSection"
-import Keyboard from "../Keyboard/Keyboard";
+import DefaultKeyboard from "../Keyboard/DefaultKeyboard"
+import ResultKeyboard from "../Keyboard/ResultKeyboard"
 import Score from "../Score/Score"
 import Timer from "../Timer/Timer"
 import RestartButton from "./RestartButton"
 import "./TypingSection.scss";
+
 
 
 const TypingSection = () => {
@@ -19,16 +21,21 @@ const TypingSection = () => {
       createTypingInitialState
    )
    useTyping({ state, dispatch })
-   useTimer({ state, dispatch })
+
    return (
       <div className="typingSection">
          {
             state.isTypingDone
-               ? <Score typingState={state} />
-               : <InputSection typingState={state} />
+               ? <>
+                  <Score typingState={state} />
+                  <ResultKeyboard state={state} />
+               </>
+               : <>
+                  <Timer state={state} dispatch={dispatch} />
+                  <InputSection typingState={state} />
+                  <DefaultKeyboard state={state} />
+               </>
          }
-         <Timer time={60 - state.timeSpent} />
-         <Keyboard state={state} />
          <RestartButton dispatch={dispatch} />
       </div>
    )
