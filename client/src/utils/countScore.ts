@@ -1,3 +1,3 @@
 export function countScore(sentenceLength: number, timeSpent: number): number {
-  return Math.floor(sentenceLength / timeSpent * 60)
+   return Math.floor(sentenceLength / Math.max(timeSpent, 0.9) * 60)
 }

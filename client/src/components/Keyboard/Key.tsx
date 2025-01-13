@@ -8,10 +8,10 @@ interface KeyProps {
       keyCode: string
    }
    isCurrChar: boolean
-   missprint: string
+   misprintKey: string
 }
 
-const Key = memo(({ symbol, isCurrChar, missprint }: KeyProps) => {
+const Key = memo(({ symbol, isCurrChar, misprintKey }: KeyProps) => {
    return (
       <span
          key={symbol.key}
@@ -20,7 +20,7 @@ const Key = memo(({ symbol, isCurrChar, missprint }: KeyProps) => {
             isCurrChar ? "highlight" : "",
             symbol.type,
             symbol.color,
-            symbol.keyCode === missprint ? "missprint" : "",
+            symbol.keyCode === misprintKey ? "misprint" : "",
             "keyboard__btn"
          ].join(" ")}
       >

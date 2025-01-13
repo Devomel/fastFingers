@@ -1,28 +1,28 @@
 import { FC } from 'react'
 import keyBoards from "../../assets/keyBoards.json"
-import { useAppSelector } from '../../hooks/redux';
+import { TypingState } from '../../store/typing/reducer';
 import Key from './Key';
 
 
 import "./Keyboard.scss"
-import MistakeKey from './MistakeKey';
+import MisprintKey from './MisprintKey';
 
 interface KeyboardProps {
-   missprint: string
-   isTimerFinish: boolean
+   state: TypingState
 }
 
-const Keyboard: FC<KeyboardProps> = ({ missprint, isTimerFinish }) => {
+const Keyboard: FC<KeyboardProps> = ({ state }) => {
    const symbols = keyBoards.ua
-   const { currChar, mistakes } = useAppSelector(state => state.typing)
+   const { currentCharIndex, mistakes, sentence } = state
+   console.log(1)
    return (
-      isTimerFinish
+      state.isTypingDone
          ? <div className="keyboard">
             <div className="keyboard__container">
                {symbols.map((row, rowIndex) => (
                   <div className="keyboard__row" key={rowIndex}>
                      {row.map((symbol) => (
-                        <MistakeKey symbol={symbol} key={symbol.key} mistakes={new Set([...mistakes])} />
+                        <MisprintKey symbol={symbol} key={symbol.key} mistakes={new Set([...mistakes])} />
                      ))}
                   </div>
                ))
@@ -36,9 +36,9 @@ const Keyboard: FC<KeyboardProps> = ({ missprint, isTimerFinish }) => {
                      {row.map((symbol) => (
                         <Key
                            symbol={symbol}
-                           isCurrChar={currChar.toLocaleLowerCase() == symbol.key}
+                           isCurrChar={sentence[currentCharIndex].toLocaleLowerCase() == symbol.key}
                            key={symbol.key}
-                           missprint={missprint} />
+                           misprintKey={state.misprintKey} />
                      ))}
                   </div>
                ))

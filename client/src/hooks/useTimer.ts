@@ -1,31 +1,28 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { setIsTypingDone, setTimeSpent } from "../store/typing/actions";
+import { TypingDispatch, TypingState } from "../store/typing/reducer";
 
 interface IUseTimerArgs {
-   duration: number;
-   isStarted: boolean;
+   state: TypingState;
+   dispatch: TypingDispatch
 }
 
-const useTimer = ({ duration, isStarted }: IUseTimerArgs) => {
-   const [time, setTime] = useState(duration);
-
+const useTimer = ({ state, dispatch }: IUseTimerArgs) => {
    useEffect(() => {
-      setTime(duration);
+      const isTypingStarted = state.currentCharIndex > 0
+      if (!isTypingStarted) return
+      const intervalId = setInterval(() => {
+         if (state.isTypingDone) {
+            clearInterval(intervalId)
+            return
+         }
 
-      if (!isStarted) return;
-
-      const interval = setInterval(() => {
-         setTime((prevTime) => {
-            if (prevTime <= 1) {
-               clearInterval(interval);
-               return 0;
-            }
-            return prevTime - 1;
-         });
-      }, 1000);
-      return () => clearInterval(interval);
-   }, [duration, isStarted]);
-
-   return { time };
-};
+         const timeSpent = state.timeSpent
+         if (timeSpent !== 60) dispatch(setTimeSpent(timeSpent + 1))
+         else dispatch(setIsTypingDone(true))
+      }, 1000)
+      return () => clearInterval(intervalId)
+   }, [state])
+}
 
 export default useTimer;

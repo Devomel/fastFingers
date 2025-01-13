@@ -1,28 +1,30 @@
 import { FC } from 'react'
-import { useAppSelector } from '../../hooks/redux'
-import "./Score.scss"
+import { TypingState } from '../../store/typing/reducer'
 import { countScore } from '../../utils/countScore'
+import "./Score.scss"
 
-
-interface IScoreProps {
-   timeSpent: number
+interface ScoreProps {
+   typingState: TypingState
 }
 
-const Score: FC<IScoreProps> = ({ timeSpent }) => {
-   const { done, mistakes } = useAppSelector(state => state.typing)
-   const score = countScore(done.length, timeSpent)
+const Score: FC<ScoreProps> = ({ typingState }) => {
 
+   const score = countScore(typingState.sentence.length, typingState.timeSpent)
+   console.log(typingState)
    return (
       <>
-         <div className='score'>
-            <h1>
-               Швидкість: {score} зн./хв
-            </h1>
+         {score &&
+            <div className='score'>
+               <h1>
+                  Швидкість: {score} зн./хв
+               </h1>
 
-            <h1>Помилки: {mistakes.length}</h1>
-            <h1>Точність: {(100 - mistakes.length * 100 / done.length).toFixed(2)}%</h1>
+               <h1>Помилки: {typingState.mistakes.length}</h1>
+               <h1>Точність: {(100 - (typingState.mistakes.length * 100 / typingState.sentence.length)).toFixed(2)}%</h1>
 
-         </div>
+            </div>
+         }
+
       </>
    )
 }

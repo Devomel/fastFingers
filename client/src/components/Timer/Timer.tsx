@@ -1,21 +1,13 @@
-import { memo, useEffect } from 'react';
-import { useAppSelector } from '../../hooks/redux';
-import useTimer from '../../hooks/useTimer';
-
-
+import { memo } from 'react';
 
 interface ITimerArgs {
-   duration: number;
-   onFinish: (isFinished: boolean) => void;
+   time: number
 }
 
-const Timer = memo(({ duration, onFinish }: ITimerArgs) => {
+const Timer = memo(({ time }: ITimerArgs) => {
 
-   const { done } = useAppSelector(state => state.typing);
-   const { time } = useTimer({ duration, isStarted: done.length > 1 });
-   useEffect(() => { if (time === 0) onFinish(true) }, [time])
-   const minutes = ((time / 60) | 0).toString().padStart(2, "0")
-   const seconds = (time % 60).toString().padStart(2, "0")
+   const minutes = Math.floor((time) / 60).toString().padStart(2, "0");
+   const seconds = ((time) % 60).toString().padStart(2, "0");
 
    return (
       <div style={{ color: "#fff" }}>
@@ -23,7 +15,7 @@ const Timer = memo(({ duration, onFinish }: ITimerArgs) => {
       </div>
    );
 });
+Timer.displayName = "Timer"
 
-Timer.displayName = 'Timer';
 
 export default Timer;

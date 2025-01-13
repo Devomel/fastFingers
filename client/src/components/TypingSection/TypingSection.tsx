@@ -1,40 +1,35 @@
-import { FC, useCallback, useState } from "react"
-import { useAppDispatch } from "../../hooks/redux"
-import useTyping from "../../hooks/typing/useTyping"
+import { useReducer } from "react"
+import useTimer from "../../hooks/useTimer"
+import useTyping from "../../hooks/useTyping"
 
-import { setStartSentenceForDefaultMode } from "../../store/typingSlice"
+import { createTypingInitialState } from "../../store/typing/createTypingInitialState"
+import { initialState, typingReducer } from "../../store/typing/reducer"
 import InputSection from "../InputSection/InputSection"
 import Keyboard from "../Keyboard/Keyboard";
 import Score from "../Score/Score"
-import Timer from "../Timer/Timer";
+import Timer from "../Timer/Timer"
+import RestartButton from "./RestartButton"
 import "./TypingSection.scss";
 
 
-
-const durationSeconds = 60
-const TypingSection: FC = () => {
-   const dispatch = useAppDispatch()
-   const [isTimerFinish, setIsTimerFinish] = useState(false)
-   const [missprint, setMissprint] = useState<string>("")
-
-   const handleRestart = useCallback(() => {
-      setIsTimerFinish(false);
-      dispatch(setStartSentenceForDefaultMode());
-      setMissprint("");
-   }, [dispatch]);
-
-   useTyping({ isTimerFinish, missprint, setMissprint })
-
+const TypingSection = () => {
+   const [state, dispatch] = useReducer(
+      typingReducer,
+      initialState,
+      createTypingInitialState
+   )
+   useTyping({ state, dispatch })
+   useTimer({ state, dispatch })
    return (
       <div className="typingSection">
          {
-            isTimerFinish
-               ? <Score timeSpent={durationSeconds} />
-               : <InputSection missprint={missprint} />
+            state.isTypingDone
+               ? <Score typingState={state} />
+               : <InputSection typingState={state} />
          }
-         <Timer duration={durationSeconds} onFinish={setIsTimerFinish} />
-         <Keyboard missprint={missprint} isTimerFinish={isTimerFinish} />
-         <button onClick={handleRestart}>РЕСТАРТ</button>
+         <Timer time={60 - state.timeSpent} />
+         <Keyboard state={state} />
+         <RestartButton dispatch={dispatch} />
       </div>
    )
 }

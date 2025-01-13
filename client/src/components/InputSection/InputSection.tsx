@@ -1,55 +1,27 @@
-import { useEffect, useRef } from "react";
-import "./InputText.scss"
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import useMode from "../../hooks/useMode";
-import { setStartSentenceForDefaultMode, setStartSentenceForDualMode } from "../../store/typingSlice";
+import { useRef } from "react";
+import { useScrollingWhileTyping } from "../../hooks/useScrollWhileTyping";
+import { TypingState } from "../../store/typing/reducer";
 import Char from "./Char";
+import "./InputText.scss"
 
 
 interface InputSectionProps {
-   missprint: string;
+   typingState: TypingState
 }
 
 
-const InputSection = ({ missprint }: InputSectionProps) => {
-   const { done, currChar, rest, opponentProgress, textIndex } = useAppSelector(state => state.typing)
-   const sentence = done.concat(currChar, rest).slice(1)
+const InputSection = ({ typingState }: InputSectionProps) => {
+   const { currentCharIndex } = typingState
+   const splitedSentence = useRef(typingState.sentence.split(""))
    const cursorRef = useRef<HTMLSpanElement>(null)
    const inputRef = useRef<HTMLDivElement>(null)
-   const prevCursorPosition = useRef(0)
-   const dispatch = useAppDispatch()
 
-   const mode = useMode()
-   useEffect(() => {
-      const startTextReceiver = {
-         default: () => dispatch(setStartSentenceForDefaultMode()),
-         dual: () => {
-            const roomData = textIndex
-            console.log(roomData)
-            // if (!roomData) return
-            dispatch(setStartSentenceForDualMode(roomData))
-         }
-      }
-      startTextReceiver[mode]()
-   }, [])
-
-   useEffect(() => {
-      if (cursorRef.current && inputRef.current) {
-         if (prevCursorPosition.current < cursorRef.current.offsetTop) {
-            inputRef.current.scroll({
-               top: prevCursorPosition.current,
-               left: 0,
-               behavior: "smooth"
-            });
-         }
-         prevCursorPosition.current = cursorRef.current.offsetTop
-      }
-   }, [rest])
+   useScrollingWhileTyping({ currentCharIndex, cursorRef, inputRef })
 
    const getCharOptions = (
       index: number,
       doneLength: number,
-      missprint: string,
+      misprint: string,
       cursorRef: React.RefObject<HTMLSpanElement>) => {
       let result;
       switch (true) {
@@ -61,11 +33,10 @@ const InputSection = ({ missprint }: InputSectionProps) => {
             break
          default:
             result = {
-               className: ["input__curr", missprint ? "wrong" : ""].join(" "),
+               className: ["input__curr", misprint ? "wrong" : ""].join(" "),
                ref: cursorRef,
             };
       }
-      if (index === +opponentProgress && index > 0) result.className += " opponentCursor"
       return result
    };
 
@@ -73,11 +44,12 @@ const InputSection = ({ missprint }: InputSectionProps) => {
       <div style={{ position: "relative" }}>
          <div className='input' ref={inputRef}>
             {
-               sentence.map((char, index) => {
+
+               splitedSentence.current.map((char, index) => {
                   return <Char
                      char={char}
                      key={index}
-                     options={getCharOptions(index, done.length - 1, missprint, cursorRef)}
+                     options={getCharOptions(index, currentCharIndex, typingState.misprintKey, cursorRef)}
                   />
                })
             }

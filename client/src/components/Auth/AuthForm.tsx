@@ -9,6 +9,7 @@ import "./AuthForm.scss"
 const AuthForm: FC = () => {
 
    const [isSignUp, setIsSignUp] = useState(false)
+
    return (
       <div >
          <div className="authForm">
