@@ -21,6 +21,8 @@ const TypingSection = () => {
       createTypingInitialState
    )
    useTyping({ state, dispatch })
+   const { isTypingDone, currentCharIndex, sentence, misprintKey } = state;
+   const isTimerStarted = !!currentCharIndex;
 
    return (
       <div className="typingSection">
@@ -31,11 +33,21 @@ const TypingSection = () => {
                   <ResultKeyboard state={state} />
                </>
                : <>
-                  <Timer state={state} dispatch={dispatch} />
-                  <InputSection typingState={state} />
+                  <InputSection
+                     currentCharIndex={currentCharIndex}
+                     sentence={sentence}
+                     misprintKey={misprintKey}
+                  />
                   <DefaultKeyboard state={state} />
                </>
          }
+
+         <Timer
+            dispatch={dispatch}
+            isStarted={isTimerStarted}
+            isTypingDone={isTypingDone}
+         />
+
          <RestartButton dispatch={dispatch} />
       </div>
    )

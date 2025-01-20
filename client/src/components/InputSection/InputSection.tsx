@@ -1,21 +1,21 @@
-import { useRef } from "react";
+import { memo, useRef } from "react";
 import { useScrollingWhileTyping } from "../../hooks/useScrollWhileTyping";
-import { TypingState } from "../../store/typing/reducer";
 import Char from "./Char";
 import "./InputText.scss"
 
 
 interface InputSectionProps {
-   typingState: TypingState
+   currentCharIndex: number;
+   sentence: string;
+   misprintKey: string
 }
 
 
-const InputSection = ({ typingState }: InputSectionProps) => {
-   const { currentCharIndex } = typingState
-   const splitedSentence = useRef(typingState.sentence.split(""))
+const InputSection = memo(({ currentCharIndex, sentence, misprintKey }: InputSectionProps) => {
+
+   const splitedSentence = sentence.split("")
    const cursorRef = useRef<HTMLSpanElement>(null)
    const inputRef = useRef<HTMLDivElement>(null)
-
    useScrollingWhileTyping({ currentCharIndex, cursorRef, inputRef })
 
    const getCharOptions = (
@@ -39,22 +39,24 @@ const InputSection = ({ typingState }: InputSectionProps) => {
       }
       return result
    };
-
+   console.log(1)
    return (
       <div style={{ position: "relative" }}>
          <div className='input' ref={inputRef}>
             {
 
-               splitedSentence.current.map((char, index) => {
+               splitedSentence.map((char, index) => {
                   return <Char
                      char={char}
                      key={index}
-                     options={getCharOptions(index, currentCharIndex, typingState.misprintKey, cursorRef)}
+                     options={getCharOptions(index, currentCharIndex, misprintKey, cursorRef)}
                   />
                })
             }
          </div >
       </div>
    )
-}
+})
+InputSection.displayName = "InputSection"
+
 export default InputSection

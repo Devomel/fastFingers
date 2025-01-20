@@ -1,3 +1,4 @@
+
 import { useEffect, useReducer } from "react";
 import { keyCodePreventExceptions, keyCodeReturnExceptions } from "../models/eventCodeExceptions";
 import { creditKeypress, incrementMistakes, setIsTypingDone, setMisprintKey } from "../store/typing/actions";
@@ -10,8 +11,7 @@ interface IUseTypingArgs {
 
 function useTyping({ state, dispatch }: IUseTypingArgs) {
 
-   const { currentCharIndex, sentence, misprintKey } = state
-
+   const { currentCharIndex, sentence, misprintKey, isTypingDone } = state
    const onKeyUp = () => {
       if (misprintKey) {
          dispatch(setMisprintKey(""))
@@ -19,13 +19,15 @@ function useTyping({ state, dispatch }: IUseTypingArgs) {
    }
 
    const onKeyDown = (e: globalThis.KeyboardEvent) => {
+      e.preventDefault()
+      console.log(e.key, sentence[currentCharIndex])
+
       if (e.code in keyCodePreventExceptions) {
          e.preventDefault();
       }
       if (e.code in keyCodeReturnExceptions) {
          return;
       }
-
       const isCorrectKey = e.key === sentence[currentCharIndex];
       const isLastChar = currentCharIndex === sentence.length - 1;
       const isTypingStarted = currentCharIndex > 0
@@ -41,15 +43,15 @@ function useTyping({ state, dispatch }: IUseTypingArgs) {
    };
 
    useEffect(() => {
-      if (!state.isTypingDone) {
+      if (!isTypingDone) {
          document.addEventListener("keyup", onKeyUp);
          document.addEventListener("keydown", onKeyDown);
       }
-      console.log()
       return () => {
          document.removeEventListener("keyup", onKeyUp);
          document.removeEventListener("keydown", onKeyDown);
       };
-   }, [state.isTypingDone, onKeyUp, onKeyDown]);
+   }, [isTypingDone, onKeyUp, onKeyDown]);
+
 }
 export default useTyping;

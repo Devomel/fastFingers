@@ -1,9 +1,9 @@
-// import lessons from '../../assets/lessons.json'
+import lessons from '../../assets/lessons.json'
 
 export const createTypingInitialState = () => {
 
-   // const sentence = lessons.facts[(Math.random() * 20) | 0] + "⠀"
-   const sentence = "длжор"
+   const sentence = lessons.facts[(Math.random() * 20) | 0]
+   // const sentence = "длжваррпіо"
    sentence.replace(" ", "//")
    return {
       isTypingDone: false,

@@ -1,40 +1,43 @@
-import { memo, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import timerDuration from '../../constants/timerDuration';
 import { setIsTypingDone, setTimeSpent } from '../../store/typing/actions';
-import { TypingDispatch, TypingState } from '../../store/typing/reducer';
+import { TypingDispatch } from '../../store/typing/reducer';
+import { formatTime } from '../../utils/formatTime';
 
 interface ITimerArgs {
-   state: TypingState
    dispatch: TypingDispatch
+   isStarted: boolean
+   isTypingDone: boolean
 }
 
-const Timer = memo(({ state, dispatch }: ITimerArgs) => {
+const Timer = ({ dispatch, isStarted, isTypingDone }: ITimerArgs) => {
 
-   const time = 60 - state.timeSpent
-   const minutes = Math.floor((time) / 60).toString().padStart(2, "0");
-   const seconds = ((time) % 60).toString().padStart(2, "0");
+   const [timeSpentLocal, setTimeSpentLocal] = useState(0)
+   const time = timerDuration.ONE_MINUTE - timeSpentLocal
+   const { minutes, seconds } = formatTime(time)
 
    useEffect(() => {
-      const isTypingStarted = state.currentCharIndex > 0
-      if (!isTypingStarted) return
-      const intervalId = setInterval(() => {
-         if (state.isTypingDone) {
-            clearInterval(intervalId)
-            return
-         }
-         const timeSpent = state.timeSpent
-         if (timeSpent !== 60) dispatch(setTimeSpent(timeSpent + 1))
-         else dispatch(setIsTypingDone(true))
-      }, 1000)
-      return () => clearInterval(intervalId)
-   }, [state])
+      if (isStarted && !isTypingDone) {
+         (async () => {
+            await new Promise((res) => setTimeout(res, 1000))
+            if (timeSpentLocal === 60) {
+               dispatch(setIsTypingDone(true))
+               return
+            }
+            setTimeSpentLocal((prev) => prev + 1)
+            dispatch(setTimeSpent(timeSpentLocal + 1))
+         })()
+      }
+      else setTimeSpentLocal(0)
+   }, [timeSpentLocal, isStarted]);
 
    return (
       <div style={{ color: "#fff" }}>
          {minutes}:{seconds}
       </div>
    );
-});
-Timer.displayName = "Timer"
+}
+
 
 
 export default Timer;
