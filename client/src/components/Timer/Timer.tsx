@@ -20,7 +20,7 @@ const Timer = ({ dispatch, isStarted, isTypingDone }: ITimerArgs) => {
       if (isStarted && !isTypingDone) {
          (async () => {
             await new Promise((res) => setTimeout(res, 1000))
-            if (timeSpentLocal === 60) {
+            if (timeSpentLocal === timerDuration.ONE_MINUTE) {
                dispatch(setIsTypingDone(true))
                return
             }

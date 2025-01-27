@@ -3,12 +3,12 @@
    padding: 10px 30px;
    border-radius: 25px;
 
-   transition: 1s;
+   transition: 0.3s;
 
 
 }
 
 .myButton:hover {
    background: #f4f5bab3;
-   transition: 0.8s;
+   transition: 0.3s;
 }

@@ -1,6 +1,6 @@
 
 import { useEffect, useReducer } from "react";
-import { keyCodePreventExceptions, keyCodeReturnExceptions } from "../models/eventCodeExceptions";
+import { keyCodePreventExceptions, keyCodeReturnExceptions } from "../models/keyCodeExceptions";
 import { creditKeypress, incrementMistakes, setIsTypingDone, setMisprintKey } from "../store/typing/actions";
 import { TypingState } from "../store/typing/reducer";
 
@@ -18,10 +18,8 @@ function useTyping({ state, dispatch }: IUseTypingArgs) {
       }
    }
 
-   const onKeyDown = (e: globalThis.KeyboardEvent) => {
-      e.preventDefault()
-      console.log(e.key, sentence[currentCharIndex])
 
+   const onKeyDown = (e: globalThis.KeyboardEvent) => {
       if (e.code in keyCodePreventExceptions) {
          e.preventDefault();
       }

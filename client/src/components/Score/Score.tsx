@@ -8,10 +8,11 @@ interface ScoreProps {
 }
 
 const Score: FC<ScoreProps> = ({ typingState }) => {
+   const { currentCharIndex, timeSpent, sentence, mistakes } = typingState
 
-   const score = countScore(typingState.currentCharIndex, typingState.timeSpent)
-   const accuracy = countAccuracy(typingState.sentence.length, new Set([...typingState.mistakes]).size)
-   console.log(typingState)
+   const score = countScore(currentCharIndex, timeSpent)
+   const accuracy = countAccuracy(sentence.length, mistakes.length)
+
    return (
       <>
          {score &&
@@ -19,7 +20,7 @@ const Score: FC<ScoreProps> = ({ typingState }) => {
                <h1>
                   Швидкість: {score} зн./хв
                </h1>
-               <h1>Помилки: {typingState.mistakes.length}</h1>
+               <h1>Помилки: {mistakes.length}</h1>
                <h1>Точність: {accuracy}%</h1>
             </div>
          }
