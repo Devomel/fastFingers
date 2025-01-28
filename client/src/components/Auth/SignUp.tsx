@@ -12,47 +12,58 @@ export const SignUp: FC = () => {
       username: "",
       email: "",
       password: ""
-   })
-   const handleInputChange = (e: ChangeEvent<HTMLInputElement>, param: string) =>
-      setUserData({ ...userData, [param]: e.target.value })
-   const [signUp, { isLoading }] = authService.useSignUpMutation()
-   const [signOut] = authService.useSignOutMutation()
+   });
+
+   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setUserData((prev) => ({ ...prev, [name]: value }));
+   };
+
+   const [signUp, { isLoading }] = authService.useSignUpMutation();
+   const [signOut] = authService.useSignOutMutation();
+
    const handleRegistration = async () => {
       try {
-         await signUp({ ...userData }).unwrap();
+         await signUp(userData).unwrap();
       } catch (err) {
-         console.error('Failed to register:', err);
+         console.error("Failed to register:", err);
       }
    };
+
    const handleLogout = async () => {
       try {
-         await signOut("").unwrap();
+         await signOut('').unwrap();
       } catch (err) {
-         console.log(err)
+         console.error("Failed to log out:", err);
       }
    };
-   if (isLoading) return <>Loading.........................</>
+
+   if (isLoading) return <>Loading...</>;
+
    return (
       <div className="authForm__item">
          <MyInput
+            name="email"
             value={userData.email}
-            onChange={(e) => handleInputChange(e, "email")}
+            onChange={handleInputChange}
             placeholder="Email"
          />
          <MyInput
             type="password"
+            name="password"
             value={userData.password}
-            onChange={(e) => handleInputChange(e, "password")}
+            onChange={handleInputChange}
             placeholder="Password"
          />
          <MyInput
             type="text"
+            name="username"
             value={userData.username}
-            onChange={(e) => handleInputChange(e, "username")}
+            onChange={handleInputChange}
             placeholder="Username"
          />
          <MyButton text="Зареєструватись" onClick={handleRegistration} />
          <MyButton text="Вийти" onClick={handleLogout} />
       </div>
-   )
+   );
 }

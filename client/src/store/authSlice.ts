@@ -55,6 +55,7 @@ const authSlice = createSlice({
             state.isAuthenticated = true;
             state.accessToken = action.payload.accessToken
             localStorage.setItem("username", action.payload.user.username)
+            localStorage.setItem("accessToken", action.payload.accessToken)
          }
       );
       builder.addMatcher(
