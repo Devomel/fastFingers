@@ -39,7 +39,7 @@ const InputSection = memo(({ currentCharIndex, sentence, misprintKey }: InputSec
       }
       return result
    };
-   console.log(1)
+
    return (
       <div style={{ position: "relative" }}>
          <div className='input' ref={inputRef}>

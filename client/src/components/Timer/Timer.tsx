@@ -18,18 +18,21 @@ const Timer = ({ dispatch, isStarted, isTypingDone }: ITimerArgs) => {
 
    useEffect(() => {
       if (isStarted && !isTypingDone) {
-         (async () => {
-            await new Promise((res) => setTimeout(res, 1000))
+         const timer = setTimeout(() => {
             if (timeSpentLocal === timerDuration.ONE_MINUTE) {
-               dispatch(setIsTypingDone(true))
-               return
+               dispatch(setIsTypingDone(true));
+            } else {
+               const nextTime = timeSpentLocal + 1;
+               setTimeSpentLocal(nextTime);
+               dispatch(setTimeSpent(nextTime));
             }
-            setTimeSpentLocal((prev) => prev + 1)
-            dispatch(setTimeSpent(timeSpentLocal + 1))
-         })()
+         }, 1000);
+         return () => clearTimeout(timer);
+      } else if (!isStarted) {
+         setTimeSpentLocal(0);
       }
-      else setTimeSpentLocal(0)
-   }, [timeSpentLocal, isStarted]);
+   }, [isStarted, isTypingDone, timeSpentLocal]);
+
 
    return (
       <div style={{ color: "#fff" }}>

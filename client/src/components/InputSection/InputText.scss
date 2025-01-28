@@ -6,13 +6,13 @@
    padding: 20px;
    overflow-y: auto;
    height: 140px;
+   -ms-overflow-style: none;
+   scrollbar-width: none;
 
    &::-webkit-scrollbar {
       display: none;
    }
 
-   -ms-overflow-style: none;
-   scrollbar-width: none;
 
    span {
       line-height: 130%;

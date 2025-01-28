@@ -9,7 +9,7 @@ interface ScoreProps {
 
 const Score: FC<ScoreProps> = ({ typingState }) => {
    const { currentCharIndex, timeSpent, sentence, mistakes } = typingState
-
+   console.log(timeSpent)
    const score = countScore(currentCharIndex, timeSpent)
    const accuracy = countAccuracy(sentence.length, mistakes.length)
 
