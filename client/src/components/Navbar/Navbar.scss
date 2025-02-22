@@ -1,12 +1,27 @@
 .navbar {
+   gap: 1vw;
+   margin-top: 20px;
    display: flex;
+   justify-content: space-between;
    align-items: center;
-   gap: 3vw;
-   color: #fff;
-   justify-content: space-evenly;
+
+   &>div,
+   span {
+
+      border-radius: 10px;
+      min-height: 60px;
+      align-items: center;
+      display: flex;
+      justify-content: space-evenly;
+      gap: 20px
+   }
+
+   &>div {
+      border: 1px solid #cfcfcf4d;
+   }
 
    & a {
-      font-size: 1.7rem;
+      font-size: 1.2rem;
       padding: 15px;
       text-align: center;
    }
