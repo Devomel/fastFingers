@@ -27,7 +27,7 @@ const TypingSection = () => {
    return (
       <div className="typingSection">
          {
-            state.isTypingDone
+            isTypingDone
                ? <>
                   <Score typingState={state} />
                   <ResultKeyboard state={state} />

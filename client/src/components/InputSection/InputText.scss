@@ -1,7 +1,7 @@
 .input {
    background: rgba(216, 211, 213, 0.047);
    border-radius: 25px;
-   border: 1px solid #deceea0d;
+   border: 1px solid var(--border-color);
    width: 100%;
    padding: 20px;
    overflow-y: auto;
@@ -26,13 +26,11 @@
    }
 
    &__rest {
-      color: rgba(255, 255, 255, 0.841);
+      color: var(--text-color)
    }
 
-
-
    &__curr {
-      color: rgba(255, 255, 255, 0.841);
+      color: var(--text-active-color);
       position: relative;
 
       &.wrong {

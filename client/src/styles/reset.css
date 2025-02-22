@@ -8,9 +8,6 @@
    box-sizing: border-box;
 }
 
-body {
-   background: #011a2e;
-}
 
 
 *,
@@ -70,7 +67,7 @@ input::-ms-clear {
 
 button {
    cursor: pointer;
-   color: white
+   color: var(--text-color)
 }
 
 button::-moz-focus-inner {
