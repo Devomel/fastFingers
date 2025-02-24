@@ -13,8 +13,8 @@ Typing Trainer – це веб-застосунок, що допомагає п�
 
 ### 📦 1. Клонування репозиторію  
 ```sh
-git clone https://github.com/your-repo/typing-trainer.git
-cd typing-trainer
+git clone https://github.com/Devomel/fastFingers.git
+cd fastFingers
 ```
 
 ### 🖥️ 2. Запуск сервера  
