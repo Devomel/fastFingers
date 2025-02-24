@@ -10,7 +10,7 @@ const Main: FC = () => {
          <br />
          <Link to={"/auth"}>Увійти</Link>
       </div>
-   );
+   )
 }
 
 export default Main;

@@ -44,7 +44,6 @@ const InputSection = memo(({ currentCharIndex, sentence, misprintKey }: InputSec
       <div style={{ position: "relative" }}>
          <div className='input' ref={inputRef}>
             {
-
                splitedSentence.map((char, index) => {
                   return <Char
                      char={char}

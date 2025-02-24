@@ -1,0 +1,38 @@
+.speedWrapper {
+   position: relative;
+   width: 70%;
+   height: 8px;
+   background-color: #dddddd59;
+   border-radius: 4px;
+   color: rgb(255, 145, 0);
+   text-align: center;
+   line-height: 90%;
+   font-weight: bold;
+   letter-spacing: 100%;
+   font-size: 0.5rem;
+
+   &::before {
+      content: "SPEED";
+      top: 0;
+
+   }
+}
+
+.speedIndicator {
+   height: 100%;
+   position: absolute;
+   top: 0;
+   background: linear-gradient(to right, skyblue, green, yellow, red);
+   transition: width 0.3s ease-in-out;
+
+   &::after {
+      content: attr(data-progress);
+      position: absolute;
+      right: 0;
+      top: -150%;
+      letter-spacing: 0;
+      font-size: 0.8rem;
+      color: var(--text-color);
+      white-space: nowrap;
+   }
+}

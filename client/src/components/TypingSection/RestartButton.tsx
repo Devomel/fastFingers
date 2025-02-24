@@ -12,8 +12,8 @@ const RestartButton: FC<RestartButtonProps> = ({ dispatch }) => {
       dispatch(resetState())
    }, [dispatch]);
    return (
-      <button onClick={initialRestart}>
-         Restart
+      <button onClick={initialRestart} style={{ fontSize: "3rem" }}>
+         ↺
       </button>
    )
 }

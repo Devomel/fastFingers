@@ -5,6 +5,7 @@ import PrivateRoute from './PrivateRoute';
 import { privateRoutes, publicRoutes } from './router';
 
 const AppRouter: FC = () => {
+
    return (
       <>
          <Routes>

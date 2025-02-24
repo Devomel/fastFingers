@@ -8,7 +8,7 @@ import InputSection from "../InputSection/InputSection"
 import DefaultKeyboard from "../Keyboard/DefaultKeyboard"
 import ResultKeyboard from "../Keyboard/ResultKeyboard"
 import Score from "../Score/Score"
-import Timer from "../Timer/Timer"
+import TypingIndicators from "../TypingIndicators/TypingIndicators"
 import RestartButton from "./RestartButton"
 import "./TypingSection.scss";
 
@@ -22,10 +22,10 @@ const TypingSection = () => {
    )
    useTyping({ state, dispatch })
    const { isTypingDone, currentCharIndex, sentence, misprintKey } = state;
-   const isTimerStarted = !!currentCharIndex;
 
    return (
       <div className="typingSection">
+         <TypingIndicators dispatch={dispatch} isTypingDone={isTypingDone} sentenceProgress={currentCharIndex} />
          {
             isTypingDone
                ? <>
@@ -41,12 +41,6 @@ const TypingSection = () => {
                   <DefaultKeyboard state={state} />
                </>
          }
-
-         <Timer
-            dispatch={dispatch}
-            isStarted={isTimerStarted}
-            isTypingDone={isTypingDone}
-         />
 
          <RestartButton dispatch={dispatch} />
       </div>

@@ -1,20 +1,18 @@
-import { useEffect, useState } from 'react';
-import timerDuration from '../../constants/timerDuration';
-import { setIsTypingDone, setTimeSpent } from '../../store/typing/actions';
-import { TypingDispatch } from '../../store/typing/reducer';
-import { formatTime } from '../../utils/formatTime';
+import { useEffect, useState } from "react";
+import timerDuration from "../constants/timerDuration";
+import { setIsTypingDone, setTimeSpent } from "../store/typing/actions";
+import { TypingDispatch } from "../store/typing/reducer";
 
-interface ITimerArgs {
+
+interface UseTimerProps {
    dispatch: TypingDispatch
-   isStarted: boolean
    isTypingDone: boolean
+   sentenceProgress: number
 }
-
-const Timer = ({ dispatch, isStarted, isTypingDone }: ITimerArgs) => {
-
+export const useTimer = ({ sentenceProgress, isTypingDone, dispatch }: UseTimerProps) => {
    const [timeSpentLocal, setTimeSpentLocal] = useState(0)
-   const time = timerDuration.ONE_MINUTE - timeSpentLocal
-   const { minutes, seconds } = formatTime(time)
+   const timeLeft = timerDuration.ONE_MINUTE - timeSpentLocal
+   const isStarted = Boolean(sentenceProgress)
 
    useEffect(() => {
       if (isStarted && !isTypingDone) {
@@ -32,15 +30,5 @@ const Timer = ({ dispatch, isStarted, isTypingDone }: ITimerArgs) => {
          setTimeSpentLocal(0);
       }
    }, [isStarted, isTypingDone, timeSpentLocal]);
-
-
-   return (
-      <div style={{ color: "#fff" }}>
-         {minutes}:{seconds}
-      </div>
-   );
+   return { timeSpentLocal, timeLeft }
 }
-
-
-
-export default Timer;
