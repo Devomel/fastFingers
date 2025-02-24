@@ -37,7 +37,7 @@ npm run dev
 
 - **Frontend:** React, TypeScript, Redux Toolkit, RTK Query  
 - **Backend:** Node.js, Express, MongoDB  
-- **Стилізація:** TailwindCSS  
+
 
 ## 💡 Майбутні покращення  
 
