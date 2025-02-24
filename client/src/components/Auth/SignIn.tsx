@@ -11,7 +11,6 @@ export const SignIn: FC = () => {
    const [password, setPassword] = useState('');
    const [login, { isLoading }] = authService.useSignInMutation()
    const redirectOnAuth = useRedirectOnAuth()
-
    const handleLogin = async () => {
       try {
          await login({ email, password }).unwrap();

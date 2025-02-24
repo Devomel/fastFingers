@@ -6,17 +6,12 @@ import mongoose from 'mongoose';
 import router from './router/index';
 import errorMiddleware from './middlewares/error-middleware';
 import http from 'http';
-import { WebSocketController } from './controller/webSocket-controller';
-import { GameRoomService } from './service/gameRoom-service';
-import { wsActionHandler } from './service/wsActionHandler';
+
 
 dotenv.config()
 const PORT: number = Number(process.env.PORT) || 5000;
 const app: Express = express();
 const server = http.createServer(app)
-const gameRoomService = new GameRoomService()
-const actionHandler = new wsActionHandler(gameRoomService);
-const wsServer = new WebSocketController(server, gameRoomService, actionHandler)
 
 app.use(express.json());
 app.use(cookieParser());
